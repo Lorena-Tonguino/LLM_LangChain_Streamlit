@@ -8,7 +8,7 @@ api_key = st.secrets["GOOGLE_API_KEY"]
 
 def generate_response(input_text):
     # 2. Pasamos la llave directamente al inicializar el modelo
-    llm = ChatGoogleGenerativeAI(model="gemini-pro", google_api_key=api_key)
+    llm = ChatGoogleGenerativeAI(model="models/gemini-1.5-pro", google_api_key=api_key)
     try:
         respuesta = llm.invoke(input_text)
         st.info(respuesta.content)
