@@ -7,13 +7,11 @@ st.title('Mi Chat con Gemini 🚀')
 api_key = st.secrets["GOOGLE_API_KEY"]
 
 def generate_response(input_text):
-    # Intentamos con la versión más compatible: 'gemini-pro' sin el prefijo 'models/'
-    # Pero nos aseguramos de que no haya conflicto de versión de API
+    # Usamos gemini-1.5-flash que es más rápido y estable para pruebas
     try:
         llm = ChatGoogleGenerativeAI(
-            model="gemini-pro", 
-            google_api_key=api_key,
-            convert_system_message_to_human=True # Ayuda a la compatibilidad
+            model="gemini-1.5-flash", 
+            google_api_key=api_key
         )
         respuesta = llm.invoke(input_text)
         st.info(respuesta.content)
