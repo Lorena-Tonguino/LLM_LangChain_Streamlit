@@ -1,20 +1,22 @@
 import streamlit as st
-import google.generativeai as genai
+from google import genai
 
 st.title('Mi Chat con Gemini 🚀')
 
-# 1. Configuración directa con la librería de Google
+# Configuración del cliente nuevo de Google
 api_key = st.secrets["GOOGLE_API_KEY"]
-genai.configure(api_key=api_key)
+client = genai.Client(api_key=api_key)
 
 def generate_response(input_text):
     try:
-        # Usamos la configuración más estándar posible
-        model = genai.GenerativeModel('gemini-1.5-flash')
-        response = model.generate_content(input_text)
+        # Esta sintaxis es la oficial para 2026 y no falla con el 404
+        response = client.models.generate_content(
+            model="gemini-1.5-flash",
+            contents=input_text
+        )
         st.info(response.text)
     except Exception as e:
-        st.error(f"Hubo un problema: {e}")
+        st.error(f"Error técnico: {e}")
 
 with st.form('my_form'):
     text = st.text_area('¿En qué puedo ayudarte?', '')
@@ -23,4 +25,4 @@ with st.form('my_form'):
         if text:
             generate_response(text)
         else:
-            st.warning('Por favor, escribe algo.')
+            st.warning('Escribe una pregunta.')
