@@ -3,13 +3,18 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 
 st.title('Mi Chat con Gemini 🚀')
 
-# 1. Obtenemos la llave de los secrets
+# Obtenemos la llave de los secrets
 api_key = st.secrets["GOOGLE_API_KEY"]
 
 def generate_response(input_text):
-    # 2. Pasamos la llave directamente al inicializar el modelo
-    llm = ChatGoogleGenerativeAI(model="models/gemini-1.5-pro", google_api_key=api_key)
+    # Intentamos con la versión más compatible: 'gemini-pro' sin el prefijo 'models/'
+    # Pero nos aseguramos de que no haya conflicto de versión de API
     try:
+        llm = ChatGoogleGenerativeAI(
+            model="gemini-pro", 
+            google_api_key=api_key,
+            convert_system_message_to_human=True # Ayuda a la compatibilidad
+        )
         respuesta = llm.invoke(input_text)
         st.info(respuesta.content)
     except Exception as e:
@@ -22,4 +27,4 @@ with st.form('my_form'):
         if text:
             generate_response(text)
         else:
-            st.warning('Por favor, escribe algo antes de enviar.')
+            st.warning('Por favor, escribe algo.')
