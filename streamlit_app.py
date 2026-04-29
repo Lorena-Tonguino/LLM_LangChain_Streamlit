@@ -11,7 +11,7 @@ def generate_response(input_text):
     try:
         # Esta sintaxis es la oficial para 2026 y no falla con el 404
         response = client.models.generate_content(
-            model="gemini-1.5-flash",
+            model="gemini-2.0-flash",
             contents=input_text
         )
         st.info(response.text)
