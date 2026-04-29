@@ -1,20 +1,18 @@
 import streamlit as st
-from langchain_google_genai import ChatGoogleGenerativeAI
+import google.generativeai as genai
 
 st.title('Mi Chat con Gemini 🚀')
 
-# Obtenemos la llave de los secrets
+# 1. Configuración directa con la librería de Google
 api_key = st.secrets["GOOGLE_API_KEY"]
+genai.configure(api_key=api_key)
 
 def generate_response(input_text):
-    # Usamos gemini-1.5-flash que es más rápido y estable para pruebas
     try:
-        llm = ChatGoogleGenerativeAI(
-            model="gemini-1.5-flash", 
-            google_api_key=api_key
-        )
-        respuesta = llm.invoke(input_text)
-        st.info(respuesta.content)
+        # Usamos la configuración más estándar posible
+        model = genai.GenerativeModel('gemini-1.5-flash')
+        response = model.generate_content(input_text)
+        st.info(response.text)
     except Exception as e:
         st.error(f"Hubo un problema: {e}")
 
